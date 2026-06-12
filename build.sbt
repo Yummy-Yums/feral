@@ -286,8 +286,7 @@ lazy val googleCloud = crossProject(JSPlatform, JVMPlatform)
       "org.typelevel" %%% "munit-cats-effect" % munitCEVersion % Test,
       "io.circe" %%% "circe-literal" % circeVersion % Test
     ),
-    mimaPreviousArtifacts := Set.empty,
-    tlVersionIntroduced := List("2.13", "3").map(_ -> "0.3.1").toMap
+    tlVersionIntroduced := List("2.13", "3").map(_ -> "0.3.2").toMap
   )
   .settings(commonSettings)
   .jsSettings(
