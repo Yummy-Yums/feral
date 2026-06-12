@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package feral.`google-cloud`
+package feral.googlecloud
 package events
 
 import io.circe._

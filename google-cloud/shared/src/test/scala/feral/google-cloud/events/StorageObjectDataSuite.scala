@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package feral.`google-cloud`.events
+package feral.googlecloud.events
 
 import io.circe.literal._
 import munit.FunSuite
