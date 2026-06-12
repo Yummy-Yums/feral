@@ -284,7 +284,7 @@ lazy val googleCloud = crossProject(JSPlatform, JVMPlatform)
       "io.circe" %%% "circe-generic" % circeVersion,
       "org.scalameta" %%% "munit-scalacheck" % munitVersion % Test,
       "org.typelevel" %%% "munit-cats-effect" % munitCEVersion % Test,
-      "io.circe" %%% "circe-literal" % circeVersion % Test,
+      "io.circe" %%% "circe-literal" % circeVersion % Test
     ),
     tlVersionIntroduced := List("2.13", "3").map(_ -> "0.3.1").toMap
   )
