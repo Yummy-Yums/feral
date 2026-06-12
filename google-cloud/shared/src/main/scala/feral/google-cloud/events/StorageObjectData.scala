@@ -100,7 +100,7 @@ object StorageObjectData {
       kind
     )
   }
-  
+
   implicit val decoder: Decoder[StorageObjectData] = deriveDecoder[Impl].map(identity)
 
   private final case class Impl(

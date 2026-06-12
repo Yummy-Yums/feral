@@ -1,20 +1,20 @@
 package feral.`google-cloud`.events
 
-import munit.FunSuite
 import io.circe.literal._
+import munit.FunSuite
 
 class StorageObjectDataSuite extends FunSuite {
 
-    import StorageObjectDataSuite._
+  import StorageObjectDataSuite._
 
-    test("decoder"){
-        event.as[StorageObjectData].toTry.get
-    }
+  test("decoder") {
+    event.as[StorageObjectData].toTry.get
+  }
 
 }
 
 object StorageObjectDataSuite {
-    def event = json"""
+  def event = json"""
         {
             "bucket": "some-bucket",
             "cacheControl": "",
