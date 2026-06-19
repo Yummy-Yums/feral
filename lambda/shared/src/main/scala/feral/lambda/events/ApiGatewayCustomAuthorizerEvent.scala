@@ -126,7 +126,7 @@ object AuthorizerRequestContext {
 }
 
 sealed abstract class ApiGatewayCustomAuthorizerEvent {
-  def `type`: String
+  def eventType: CustomAuthorizerEventType
   def methodArn: String
   def resource: String
   def path: String
@@ -143,7 +143,7 @@ sealed abstract class ApiGatewayCustomAuthorizerEvent {
 object ApiGatewayCustomAuthorizerEvent {
 
   def apply(
-      `type`: String,
+      eventType: CustomAuthorizerEventType,
       methodArn: String,
       resource: String,
       path: String,
@@ -157,7 +157,7 @@ object ApiGatewayCustomAuthorizerEvent {
       requestContext: AuthorizerRequestContext
   ): ApiGatewayCustomAuthorizerEvent =
     new Impl(
-      `type`,
+      eventType,
       methodArn,
       resource,
       path,
@@ -190,7 +190,7 @@ object ApiGatewayCustomAuthorizerEvent {
   )(ApiGatewayCustomAuthorizerEvent.apply)
 
   private case class Impl(
-      `type`: String,
+      eventType: CustomAuthorizerEventType,
       methodArn: String,
       resource: String,
       path: String,
@@ -205,4 +205,17 @@ object ApiGatewayCustomAuthorizerEvent {
   ) extends ApiGatewayCustomAuthorizerEvent {
     override def productPrefix = "ApiGatewayCustomAuthorizerEvent"
   }
+}
+
+sealed abstract class CustomAuthorizerEventType
+
+object CustomAuthorizerEventType {
+  case object Token extends CustomAuthorizerEventType
+  case object Request extends CustomAuthorizerEventType
+
+  private[events] implicit val decoder: Decoder[CustomAuthorizerEventType] =
+    Decoder.decodeString.map {
+      case "TOKEN" => Token
+      case "REQUEST" => Request
+    }
 }
