@@ -29,7 +29,7 @@ class AppSyncLambdaAuthorizerEventSuite extends FunSuite {
     assertEquals(parsed_event.authorizationToken, "ExampleAUTHtoken123123123")
     assertEquals(parsed_event.requestContext.accountId, "111122223333")
     assertEquals(parsed_event.requestContext.apiId, "aaaaaa123123123example123")
-    assertEquals(parsed_event.requestContext.channel, "/news/latest")
+    assertEquals(parsed_event.requestContext.requestId, "f4081827-1111-4444-5555-5cf4695f339f")
     assertEquals(parsed_event.requestHeaders("header"), "value")
   }
 
@@ -40,13 +40,13 @@ object AppSyncLambdaAuthorizerEventSuite {
     {
         "authorizationToken": "ExampleAUTHtoken123123123",
         "requestContext": {
-            "apiId": "aaaaaa123123123example123",
-            "accountId": "111122223333",
-            "requestId": "f4081827-1111-4444-5555-5cf4695f339f",
-            "operation": "EVENT_PUBLISH",
-            "channelNamespaceName": "news",
-            "channel": "/news/latest"
-        },
+          "apiId": "aaaaaa123123123example123",
+          "accountId": "111122223333",
+          "requestId": "f4081827-1111-4444-5555-5cf4695f339f",
+          "queryString": "mutation CreateEvent {...}\n\nquery MyQuery {...}\n",
+          "operationName": "MyQuery",
+          "variables": {}
+      },
         "requestHeaders": {
             "header": "value"
         }

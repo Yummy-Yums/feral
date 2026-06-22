@@ -18,14 +18,15 @@ package feral.lambda
 package events
 
 import io.circe.Decoder
+import io.circe.Json
 
 sealed abstract class AppSyncRequestContext {
   def apiId: String
   def accountId: String
   def requestId: String
-  def operation: String
-  def channelNamespaceName: String
-  def channel: String
+  def queryString: String
+  def operationName: String
+  def variables: Map[String, Json]
 }
 
 object AppSyncRequestContext {
@@ -34,35 +35,35 @@ object AppSyncRequestContext {
       apiId: String,
       accountId: String,
       requestId: String,
-      operation: String,
-      channelNamespaceName: String,
-      channel: String
+      queryString: String,
+      operationName: String,
+      variables: Map[String, Json]
   ): AppSyncRequestContext =
     new Impl(
       apiId,
       accountId,
       requestId,
-      operation,
-      channelNamespaceName,
-      channel
+      queryString,
+      operationName,
+      variables
     )
 
   implicit def decoder: Decoder[AppSyncRequestContext] = Decoder.forProduct6(
     "apiId",
     "accountId",
     "requestId",
-    "operation",
-    "channelNamespaceName",
-    "channel"
+    "queryString",
+    "operationName",
+    "variables"
   )(AppSyncRequestContext.apply)
 
   private final case class Impl(
       apiId: String,
       accountId: String,
       requestId: String,
-      operation: String,
-      channelNamespaceName: String,
-      channel: String
+      queryString: String,
+      operationName: String,
+      variables: Map[String, Json]
   ) extends AppSyncRequestContext {
     override def productPrefix = "AppSyncRequestContext"
   }
