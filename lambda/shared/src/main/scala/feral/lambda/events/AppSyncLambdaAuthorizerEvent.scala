@@ -19,6 +19,8 @@ package events
 
 import io.circe.Decoder
 import io.circe.Json
+import org.typelevel.ci.CIString
+import codecs._
 
 sealed abstract class AppSyncRequestContext {
   def apiId: String
@@ -72,19 +74,19 @@ object AppSyncRequestContext {
 sealed abstract class AppSyncLambdaAuthorizerEvent {
   def authorizationToken: String
   def requestContext: AppSyncRequestContext
-  def requestHeaders: Map[String, String]
+  def requestHeaders: Map[CIString, String]
 }
 
 object AppSyncLambdaAuthorizerEvent {
   def apply(
       authorizationToken: String,
       requestContext: AppSyncRequestContext,
-      requestHeaders: Map[String, String]
+      requestHeaders: Map[CIString, String]
   ): AppSyncLambdaAuthorizerEvent =
     new Impl(
       authorizationToken: String,
       requestContext: AppSyncRequestContext,
-      requestHeaders: Map[String, String]
+      requestHeaders: Map[CIString, String]
     )
 
   implicit def decoder: Decoder[AppSyncLambdaAuthorizerEvent] = Decoder.forProduct3(
@@ -96,7 +98,7 @@ object AppSyncLambdaAuthorizerEvent {
   private final case class Impl(
       authorizationToken: String,
       requestContext: AppSyncRequestContext,
-      requestHeaders: Map[String, String]
+      requestHeaders: Map[CIString, String]
   ) extends AppSyncLambdaAuthorizerEvent {
     override def productPrefix = "AppSyncLambdaAuthorizerEvent"
   }
