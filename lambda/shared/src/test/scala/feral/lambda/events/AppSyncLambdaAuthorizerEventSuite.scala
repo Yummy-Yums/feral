@@ -18,6 +18,7 @@ package feral.lambda.events
 
 import io.circe.literal._
 import munit.FunSuite
+import org.typelevel.ci.CIString
 
 class AppSyncLambdaAuthorizerEventSuite extends FunSuite {
 
@@ -30,7 +31,7 @@ class AppSyncLambdaAuthorizerEventSuite extends FunSuite {
     assertEquals(parsed_event.requestContext.accountId, "111122223333")
     assertEquals(parsed_event.requestContext.apiId, "aaaaaa123123123example123")
     assertEquals(parsed_event.requestContext.requestId, "f4081827-1111-4444-5555-5cf4695f339f")
-    assertEquals(parsed_event.requestHeaders("header"), "value")
+    assertEquals(parsed_event.requestHeaders(CIString("header")), "value")
   }
 
 }
