@@ -20,6 +20,7 @@ package events
 import io.circe.Decoder
 import io.circe.Json
 import org.typelevel.ci.CIString
+
 import codecs._
 
 sealed abstract class AppSyncRequestContext {
