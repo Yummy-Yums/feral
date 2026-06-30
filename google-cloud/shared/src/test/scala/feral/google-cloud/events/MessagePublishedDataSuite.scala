@@ -19,6 +19,8 @@ package feral.googlecloud.events
 import io.circe.literal._
 import munit.FunSuite
 
+import java.time.Instant
+
 class MessagePublishedDataSuite extends FunSuite {
 
   import MessagePublishedDataSuite._
@@ -29,7 +31,7 @@ class MessagePublishedDataSuite extends FunSuite {
     assertEquals(data.message.data, "dGVzdCBtZXNzYWdlIDM=")
     assertEquals(data.message.attributes, Map("attr1" -> "attr1-value"))
     assertEquals(data.message.messageId, "message-id")
-    assertEquals(data.message.publishTime, "2021-02-05T04:06:14.109Z")
+    assertEquals(data.message.publishTime, Instant.parse("2021-02-05T04:06:14.109Z"))
   }
 
 }

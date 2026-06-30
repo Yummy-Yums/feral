@@ -19,6 +19,8 @@ package events
 
 import io.circe._
 
+import java.time.Instant
+
 sealed abstract class MessagePublishedData {
   def message: PubsubMessage
   def subscription: String
@@ -53,7 +55,7 @@ sealed abstract class PubsubMessage {
   def data: String
   def attributes: Map[String, String]
   def messageId: String
-  def publishTime: String
+  def publishTime: Instant
   def orderingKey: Option[String]
 }
 
@@ -63,11 +65,13 @@ object PubsubMessage {
       data: String,
       attributes: Map[String, String],
       messageId: String,
-      publishTime: String,
+      publishTime: Instant,
       orderingKey: Option[String]
   ): PubsubMessage = {
     new Impl(data, attributes, messageId, publishTime, orderingKey)
   }
+
+  import codecs.decodeInstant
 
   implicit val decoder: Decoder[PubsubMessage] = Decoder.forProduct5(
     "data",
@@ -81,7 +85,7 @@ object PubsubMessage {
       data: String,
       attributes: Map[String, String],
       messageId: String,
-      publishTime: String,
+      publishTime: Instant,
       orderingKey: Option[String]
   ) extends PubsubMessage { override def productPrefix = "PubsubMessage" }
 }
