@@ -21,49 +21,81 @@ import munit.FunSuite
 
 class StorageObjectDataSuite extends FunSuite {
 
-  import StorageObjectDataSuite._
-
   test("decoder") {
-    event.as[StorageObjectData].toTry.get
+    assertEquals(event.as[StorageObjectData].toTry.get, result)
   }
 
-}
-
-object StorageObjectDataSuite {
   def event = json"""
-        {
-            "bucket": "some-bucket",
-            "cacheControl": "",
-            "componentCount": 0,
-            "contentDisposition": "",
-            "contentEncoding": "",
-            "contentLanguage": "",
-            "contentType": "text/plain",
-            "crc32c": "rTVTeQ==",
-            "customerEncryption": {
-                "encryptionAlgorithm": "AES256",
-                "keySha256": "abc123"
-            },
-            "etag": "CNHZkbuF/ugCEAE=",
-            "eventBasedHold": false,
-            "generation": 12345,
-            "id": "some-bucket/folder/Test.cs/1587627537231057",
-            "kind": "storage#object",
-            "kmsKeyName": "",
-            "md5Hash": "kF8MuJ5+CTJxvyhHS1xzRg==",
-            "mediaLink": "https://www.googleapis.com/download/storage/v1/b/some-bucket/o/folder%2FTest.cs?generation=1587627537231057\u0026alt=media",
-            "metadata": {},
-            "metageneration": 1,
-            "name": "folder/Test.cs",
-            "retentionExpirationTime": "",
-            "selfLink": "https://www.googleapis.com/storage/v1/b/some-bucket/o/folder/Test.cs",
-            "size": 352,
-            "storageClass": "MULTI_REGIONAL",
-            "temporaryHold": false,
-            "timeCreated": "2020-04-23T07:38:57.230Z",
-            "timeDeleted": "",
-            "timeStorageClassUpdated": "2020-04-23T07:38:57.230Z",
-            "updated": "2020-04-23T07:38:57.230Z"
-        }
-    """
+    {
+      "bucket": "some-bucket",
+      "cacheControl": "",
+      "componentCount": 0,
+      "contentDisposition": "",
+      "contentEncoding": "",
+      "contentLanguage": "",
+      "contentType": "text/plain",
+      "crc32c": "rTVTeQ==",
+      "customerEncryption": {
+          "encryptionAlgorithm": "AES256",
+          "keySha256": "abc123"
+      },
+      "etag": "CNHZkbuF/ugCEAE=",
+      "eventBasedHold": false,
+      "generation": 12345,
+      "id": "some-bucket/folder/Test.cs/1587627537231057",
+      "kind": "storage#object",
+      "kmsKeyName": "",
+      "md5Hash": "kF8MuJ5+CTJxvyhHS1xzRg==",
+      "mediaLink": "https://www.googleapis.com/download/storage/v1/b/some-bucket/o/folder%2FTest.cs?generation=1587627537231057\u0026alt=media",
+      "metadata": {},
+      "metageneration": 1,
+      "name": "folder/Test.cs",
+      "retentionExpirationTime": "",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/some-bucket/o/folder/Test.cs",
+      "size": 352,
+      "storageClass": "MULTI_REGIONAL",
+      "temporaryHold": false,
+      "timeCreated": "2020-04-23T07:38:57.230Z",
+      "timeDeleted": "",
+      "timeStorageClassUpdated": "2020-04-23T07:38:57.230Z",
+      "updated": "2020-04-23T07:38:57.230Z"
+    }
+  """
+
+  def result = StorageObjectData(
+    contentEncoding = "",
+    contentDisposition = "",
+    cacheControl = "",
+    contentLanguage = "",
+    metageneration = 1,
+    timeDeleted = "",
+    contentType = "text/plain",
+    size = 352,
+    timeCreated = "2020-04-23T07:38:57.230Z",
+    crc32c = "rTVTeQ==",
+    componentCount = 0,
+    md5Hash = "kF8MuJ5+CTJxvyhHS1xzRg==",
+    etag = "CNHZkbuF/ugCEAE=",
+    updated = "2020-04-23T07:38:57.230Z",
+    storageClass = "MULTI_REGIONAL",
+    kmsKeyName = "",
+    timeStorageClassUpdated = "2020-04-23T07:38:57.230Z",
+    temporaryHold = false,
+    retentionExpirationTime = "",
+    metadata = Map.empty,
+    eventBasedHold = false,
+    name = "folder/Test.cs",
+    id = "some-bucket/folder/Test.cs/1587627537231057",
+    bucket = "some-bucket",
+    generation = 12345,
+    customerEncryption = CustomerEncryption(
+      encryptionAlgorithm = "AES256",
+      keySha256 = "abc123"
+    ),
+    mediaLink =
+      "https://www.googleapis.com/download/storage/v1/b/some-bucket/o/folder%2FTest.cs?generation=1587627537231057\u0026alt=media",
+    selfLink = "https://www.googleapis.com/storage/v1/b/some-bucket/o/folder/Test.cs",
+    kind = "storage#object"
+  )
+
 }
