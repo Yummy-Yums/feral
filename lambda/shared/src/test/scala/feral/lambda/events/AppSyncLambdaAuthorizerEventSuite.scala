@@ -23,20 +23,9 @@ import org.typelevel.ci.CIString
 class AppSyncLambdaAuthorizerEventSuite extends FunSuite {
 
   test("decoder") {
-    import AppSyncLambdaAuthorizerEventSuite._
-
-    val parsed_event = event.as[AppSyncLambdaAuthorizerEvent].toTry.get
-
-    assertEquals(parsed_event.authorizationToken, "ExampleAUTHtoken123123123")
-    assertEquals(parsed_event.requestContext.accountId, "111122223333")
-    assertEquals(parsed_event.requestContext.apiId, "aaaaaa123123123example123")
-    assertEquals(parsed_event.requestContext.requestId, "f4081827-1111-4444-5555-5cf4695f339f")
-    assertEquals(parsed_event.requestHeaders(CIString("header")), "value")
+    assertEquals(event.as[AppSyncLambdaAuthorizerEvent].toTry.get, result)
   }
 
-}
-
-object AppSyncLambdaAuthorizerEventSuite {
   def event = json"""
     {
         "authorizationToken": "ExampleAUTHtoken123123123",
@@ -52,5 +41,18 @@ object AppSyncLambdaAuthorizerEventSuite {
             "header": "value"
         }
     }
-    """
+  """
+
+  def result = AppSyncLambdaAuthorizerEvent(
+    authorizationToken = "ExampleAUTHtoken123123123",
+    requestContext = AppSyncRequestContext(
+      apiId = "aaaaaa123123123example123",
+      accountId = "111122223333",
+      requestId = "f4081827-1111-4444-5555-5cf4695f339f",
+      queryString = "mutation CreateEvent {...}\n\nquery MyQuery {...}\n",
+      operationName = "MyQuery",
+      variables = Map()
+    ),
+    requestHeaders = Map(CIString("header") -> "value")
+  )
 }
