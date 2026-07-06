@@ -19,26 +19,30 @@ package feral.googlecloud.events
 import io.circe._
 import io.circe.generic.semiauto.deriveDecoder
 
+import java.time.Instant
+
+import codecs.decodeDateTimetoInstant
+
 sealed abstract class StorageObjectData {
   def contentEncoding: String
   def contentDisposition: String
   def cacheControl: String
   def contentLanguage: String
   def metageneration: Int
-  def timeDeleted: String
+  def timeDeleted: Option[Instant]
   def contentType: String
   def size: Int
-  def timeCreated: String
+  def timeCreated: Option[Instant]
   def crc32c: String
   def componentCount: Int
   def md5Hash: String
   def etag: String
-  def updated: String
+  def updated: Option[Instant]
   def storageClass: String
   def kmsKeyName: String
-  def timeStorageClassUpdated: String
+  def timeStorageClassUpdated: Option[Instant]
   def temporaryHold: Boolean
-  def retentionExpirationTime: String
+  def retentionExpirationTime: Option[Instant]
   def metadata: Map[String, String]
   def eventBasedHold: Boolean
   def name: String
@@ -59,20 +63,20 @@ object StorageObjectData {
       cacheControl: String,
       contentLanguage: String,
       metageneration: Int,
-      timeDeleted: String,
+      timeDeleted: Option[Instant],
       contentType: String,
       size: Int,
-      timeCreated: String,
+      timeCreated: Option[Instant],
       crc32c: String,
       componentCount: Int,
       md5Hash: String,
       etag: String,
-      updated: String,
+      updated: Option[Instant],
       storageClass: String,
       kmsKeyName: String,
-      timeStorageClassUpdated: String,
+      timeStorageClassUpdated: Option[Instant],
       temporaryHold: Boolean,
-      retentionExpirationTime: String,
+      retentionExpirationTime: Option[Instant],
       metadata: Map[String, String],
       eventBasedHold: Boolean,
       name: String,
@@ -125,20 +129,20 @@ object StorageObjectData {
       cacheControl: String,
       contentLanguage: String,
       metageneration: Int,
-      timeDeleted: String,
+      timeDeleted: Option[Instant],
       contentType: String,
       size: Int,
-      timeCreated: String,
+      timeCreated: Option[Instant],
       crc32c: String,
       componentCount: Int,
       md5Hash: String,
       etag: String,
-      updated: String,
+      updated: Option[Instant],
       storageClass: String,
       kmsKeyName: String,
-      timeStorageClassUpdated: String,
+      timeStorageClassUpdated: Option[Instant],
       temporaryHold: Boolean,
-      retentionExpirationTime: String,
+      retentionExpirationTime: Option[Instant],
       metadata: Map[String, String],
       eventBasedHold: Boolean,
       name: String,

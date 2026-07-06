@@ -19,6 +19,8 @@ package feral.googlecloud.events
 import io.circe.literal._
 import munit.FunSuite
 
+import java.time.Instant
+
 class StorageObjectDataSuite extends FunSuite {
 
   test("decoder") {
@@ -68,20 +70,20 @@ class StorageObjectDataSuite extends FunSuite {
     cacheControl = "",
     contentLanguage = "",
     metageneration = 1,
-    timeDeleted = "",
+    timeDeleted = None,
     contentType = "text/plain",
     size = 352,
-    timeCreated = "2020-04-23T07:38:57.230Z",
+    timeCreated = Some(Instant.parse("2020-04-23T07:38:57.230Z")),
     crc32c = "rTVTeQ==",
     componentCount = 0,
     md5Hash = "kF8MuJ5+CTJxvyhHS1xzRg==",
     etag = "CNHZkbuF/ugCEAE=",
-    updated = "2020-04-23T07:38:57.230Z",
+    updated = Some(Instant.parse("2020-04-23T07:38:57.230Z")),
     storageClass = "MULTI_REGIONAL",
     kmsKeyName = "",
-    timeStorageClassUpdated = "2020-04-23T07:38:57.230Z",
+    timeStorageClassUpdated = Some(Instant.parse("2020-04-23T07:38:57.230Z")),
     temporaryHold = false,
-    retentionExpirationTime = "",
+    retentionExpirationTime = None,
     metadata = Map.empty,
     eventBasedHold = false,
     name = "folder/Test.cs",
