@@ -21,6 +21,8 @@ import io.circe._
 
 import java.time.Instant
 
+import scodec.bits.ByteVector
+
 sealed abstract class MessagePublishedData {
   def message: PubsubMessage
   def subscription: String
@@ -52,7 +54,7 @@ object MessagePublishedData {
 }
 
 sealed abstract class PubsubMessage {
-  def data: String
+  def data: ByteVector
   def attributes: Map[String, String]
   def messageId: String
   def publishTime: Instant
@@ -62,7 +64,7 @@ sealed abstract class PubsubMessage {
 object PubsubMessage {
 
   def apply(
-      data: String,
+      data: ByteVector,
       attributes: Map[String, String],
       messageId: String,
       publishTime: Instant,
@@ -71,7 +73,7 @@ object PubsubMessage {
     new Impl(data, attributes, messageId, publishTime, orderingKey)
   }
 
-  import codecs.decodeInstant
+  import codecs.{decodeByteVector, decodeInstant}
 
   implicit val decoder: Decoder[PubsubMessage] = Decoder.forProduct5(
     "data",
@@ -82,7 +84,7 @@ object PubsubMessage {
   )(PubsubMessage.apply)
 
   private final case class Impl(
-      data: String,
+      data: ByteVector,
       attributes: Map[String, String],
       messageId: String,
       publishTime: Instant,

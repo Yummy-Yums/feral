@@ -18,6 +18,7 @@ package feral.googlecloud.events
 
 import io.circe.literal._
 import munit.FunSuite
+import scodec.bits.ByteVector
 
 import java.time.Instant
 
@@ -44,7 +45,7 @@ class MessagePublishedDataSuite extends FunSuite {
   def result = MessagePublishedData(
     subscription = "projects/my-project/subscriptions/my-subscription",
     message = PubsubMessage(
-      data = "dGVzdCBtZXNzYWdlIDM=",
+      data = ByteVector.fromBase64("dGVzdCBtZXNzYWdlIDM=").get,
       attributes = Map("attr1" -> "attr1-value"),
       messageId = "message-id",
       publishTime = Instant.parse("2021-02-05T04:06:14.109Z"),
