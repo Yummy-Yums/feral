@@ -18,10 +18,9 @@ package feral.googlecloud
 package events
 
 import io.circe._
+import scodec.bits.ByteVector
 
 import java.time.Instant
-
-import scodec.bits.ByteVector
 
 sealed abstract class MessagePublishedData {
   def message: PubsubMessage

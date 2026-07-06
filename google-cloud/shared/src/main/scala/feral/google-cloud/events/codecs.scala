@@ -17,10 +17,10 @@
 package feral.googlecloud.events
 
 import io.circe.Decoder
+import scodec.bits.ByteVector
 
 import java.time.Instant
 import scala.util.Try
-import scodec.bits.ByteVector
 
 private object codecs {
   implicit def decodeInstantFromMillis: Decoder[Instant] =
@@ -29,9 +29,9 @@ private object codecs {
   implicit def decodeInstant: Decoder[Instant] =
     Decoder.decodeString.emapTry { str => Try(Instant.parse(str)) }
 
-  implicit def decodeByteVector: Decoder[ByteVector] = 
-    Decoder.decodeString.emap{ str => 
-      ByteVector.fromBase64(str).toRight(s"Invalid base64 string")  
+  implicit def decodeByteVector: Decoder[ByteVector] =
+    Decoder.decodeString.emap { str =>
+      ByteVector.fromBase64(str).toRight(s"Invalid base64 string")
     }
 
 }
