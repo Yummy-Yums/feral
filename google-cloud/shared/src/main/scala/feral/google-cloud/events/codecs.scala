@@ -17,25 +17,25 @@
 package feral.googlecloud.events
 
 import io.circe.Decoder
+import io.circe.DecodingFailure
 import scodec.bits.ByteVector
 
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 import scala.util.Try
-import io.circe.DecodingFailure
 
 private object codecs {
   implicit def decodeInstantFromMillis: Decoder[Instant] =
     Decoder.decodeLong.emapTry { millis => Try(Instant.ofEpochMilli(millis)) }
 
-  implicit def decodeDateTimetoInstant: Decoder[Option[Instant]] = 
-    Decoder.instance[Option[Instant]]{ c =>
-
+  implicit def decodeDateTimetoInstant: Decoder[Option[Instant]] =
+    Decoder.instance[Option[Instant]] { c =>
       c.as[String] match {
         case Right("") => Right(None)
-        case Right(str) => {            
+        case Right(str) => {
           Try {
-            val parsed_date_time = java.time.ZonedDateTime.parse(str, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+            val parsed_date_time =
+              java.time.ZonedDateTime.parse(str, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
             parsed_date_time.toInstant()
           }.toEither.left.map(e => DecodingFailure(e.getMessage(), c.history)).map(Some(_))
         }
