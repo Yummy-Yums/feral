@@ -29,9 +29,8 @@ import io.cloudevents.CloudEvent
 
 import scala.util.control.NonFatal
 
-
 abstract class IOCloudEventsFunction[Event, Result](
-  implicit private[googlecloud] val decoder: Decoder[Event]
+    implicit private[googlecloud] val decoder: Decoder[Event]
 ) extends CloudEventsFunction {
 
   // IOLambda equivalent
@@ -39,11 +38,10 @@ abstract class IOCloudEventsFunction[Event, Result](
 
   def handler: Resource[IO, ContextEventWithData[Event] => IO[Unit]]
 
-
   // IOLambdaPlatform equivalent
   private[this] val (dipatcher, handle) = {
     val handler = {
-      val h = 
+      val h =
         try this.handler
         catch { case ex if NonFatal(ex) => null }
 
@@ -51,7 +49,7 @@ abstract class IOCloudEventsFunction[Event, Result](
         h.map(IO.pure(_))
       } else {
         val functionName = getClass().getSimpleName()
-        val msg = 
+        val msg =
           s"""|There was an error initializing `$functionName` during startup.
               |Falling back to initialize-during-first-invocation strategy.
               |To fix, try replacing any `val`s in `$functionName` with `def`s.""".stripMargin
@@ -71,21 +69,18 @@ abstract class IOCloudEventsFunction[Event, Result](
 
   final def accept(event: CloudEvent): Unit = {
     val cloudEventWithContextData = IO.fromEither(ContextEventWithData.from[Event](event))
-    
+
     dipatcher.unsafeRunSync(
-      handle.flatMap{ func =>
-        cloudEventWithContextData.flatMap(func)
-      }
+      handle.flatMap { func => cloudEventWithContextData.flatMap(func) }
     )
   }
 
 }
 
-
 object IOCloudEventsFunction {
-    abstract class Simple[Event, Result](
+  abstract class Simple[Event, Result](
       implicit decoder: Decoder[Event]
-    ) extends IOCloudEventsFunction[Event, Result] {
+  ) extends IOCloudEventsFunction[Event, Result] {
 
     type Init
     def init: Resource[IO, Init] = Resource.pure(null.asInstanceOf[Init])

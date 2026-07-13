@@ -39,22 +39,23 @@ final case class CloudEventContext(
 )
 
 object CloudEventContext {
-    def from(event: CloudEvent): CloudEventContext = {
-        CloudEventContext(
-            id = event.getId(),
-            `type` = event.getType(),
-            source = event.getSource(),
-            dataContentType = Option(event.getDataContentType()),
-            dataSchema = Option(event.getDataSchema()),
-            subject = Option(event.getSubject()),
-            time = Option(event.getTime()),
-            extensions = event.getAttributeNames
-                .asScala
-                .filterNot(Set("id","type","source","time","datacontenttype","subject"))
-                .map(k => k -> event.getAttribute(k).toString)
-                .toMap
-            )
-    }
+  def from(event: CloudEvent): CloudEventContext = {
+    CloudEventContext(
+      id = event.getId(),
+      `type` = event.getType(),
+      source = event.getSource(),
+      dataContentType = Option(event.getDataContentType()),
+      dataSchema = Option(event.getDataSchema()),
+      subject = Option(event.getSubject()),
+      time = Option(event.getTime()),
+      extensions = event
+        .getAttributeNames
+        .asScala
+        .filterNot(Set("id", "type", "source", "time", "datacontenttype", "subject"))
+        .map(k => k -> event.getAttribute(k).toString)
+        .toMap
+    )
+  }
 }
 
 final case class ContextEventWithData[A](
@@ -62,21 +63,20 @@ final case class ContextEventWithData[A](
     data: A
 )
 
-
 object ContextEventWithData {
 
-    def from[A: Decoder](event: CloudEvent): Either[Error, ContextEventWithData[A]] = {
-        val context = CloudEventContext.from(event)
+  def from[A: Decoder](event: CloudEvent): Either[Error, ContextEventWithData[A]] = {
+    val context = CloudEventContext.from(event)
 
-        Option(event.getData())
-            .toRight(DecodingFailure("CloudEvent has no data", Nil))
-            .flatMap{ data =>
-                //TODO - maybe refactor this to only use String instead of StringBuilder?
-                val res = new StringBuilder()
-                res.append(new String(data.toBytes(), StandardCharsets.UTF_8))
-                parse(res.result()).flatMap(_.as[A])
-            }
-            .map(ContextEventWithData(context, _))
-    }
+    Option(event.getData())
+      .toRight(DecodingFailure("CloudEvent has no data", Nil))
+      .flatMap { data =>
+        // TODO - maybe refactor this to only use String instead of StringBuilder?
+        val res = new StringBuilder()
+        res.append(new String(data.toBytes(), StandardCharsets.UTF_8))
+        parse(res.result()).flatMap(_.as[A])
+      }
+      .map(ContextEventWithData(context, _))
+  }
 
 }
